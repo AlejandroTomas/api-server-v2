@@ -33,7 +33,7 @@ app.get('/',(req,res)=>{
 
 // conectando la db
 mongoose.connect(
-    process.env.DB_CONNECTION,
+    "mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     { useNewUrlParser: true},
     ()=>console.log('DB conected'));
 
