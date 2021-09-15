@@ -32,10 +32,9 @@ app.get('/',(req,res)=>{
 });
 
 // conectando la db
-mongoose.connect(
-    "mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    { useNewUrlParser: true},
-    ()=>console.log('DB conected'));
+mongoose.connect("mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/yagulMarket?retryWrites=true&w=majority")
+.then( db => console.log('db connected'))
+.catch(err=>console.log(err))
 
 app.listen(app.get('port'),()=>{
     console.log('Listen on port: '+app.get('port'))
