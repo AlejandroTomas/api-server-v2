@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser =  require('body-parser')
 const cors = require('cors')
-const Products = require('./models/Products')
 require('dotenv/config')
 
 //Middlewares
@@ -30,8 +29,7 @@ app.set('port',process.env.PORT || 3000);
 //ROUTES
 app.get('/',async (req,res)=>{
     try {
-        const products = await Products.find();
-        res.send('Complete'+products)
+        res.send('Complete')
     } catch (err) {
         res.json({message:err})
         res.send(err)
