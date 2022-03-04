@@ -12,19 +12,15 @@ app.use(bodyParser.json());
 
 //Import Routes
 const productsRoutes = require('./routes/products')
-const newProductsRoutes = require('./routes/newProducts')
-const categoryRoutes = require('./routes/category')
-const offersRoutes = require('./routes/offers')
-const businessRoutes = require('./routes/business')
-
-app.use('/products', productsRoutes);
-app.use('/new', newProductsRoutes);
-app.use('/category', categoryRoutes);
-app.use('/offers', offersRoutes);
-app.use('/business', businessRoutes);
+const usersRoutes = require('./routes/users')
 
 
-app.set('port',process.env.PORT || 3000);
+app.use('/productos', productsRoutes);
+app.use('/usuarios', usersRoutes);
+
+
+
+app.set('port',process.env.PORT || 5000);
 
 //ROUTES
 app.get('/',async (req,res)=>{
@@ -37,7 +33,7 @@ app.get('/',async (req,res)=>{
 });
 
 // conectando la db
-mongoose.connect("mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/yagulMarket?retryWrites=true&w=majority")
+mongoose.connect(process.env.DB_CONNECTION)
 .then( db => console.log('db connected'))
 .catch(err=>console.log(err))
 
