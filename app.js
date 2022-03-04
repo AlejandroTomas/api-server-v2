@@ -33,7 +33,7 @@ app.get('/',async (req,res)=>{
 });
 
 // conectando la db
-mongoose.connect(process.env.DB_CONNECTION)
+mongoose.connect("mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/db-yagul?retryWrites=true&w=majority")
 .then( db => console.log('db connected'))
 .catch(err=>console.log(err))
 

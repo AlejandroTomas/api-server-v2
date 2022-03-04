@@ -43,14 +43,15 @@ function desHash(string){
         return newArray
 }
 
-router.get('/',async (req,res)=>{
+//Solo descomentar en desarrollo
+/* router.get('/',async (req,res)=>{
     try {
         const users = await Users.find();
         res.json(users)
     } catch (err) {
         res.json({message:err})
     }
-}); 
+});  */
 
 /* Buscar un usuario en especifico */
 router.post('/session',async (req,res)=>{
