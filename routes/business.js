@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Business = require('../models/Business')
 
-//Get all products
+//Get business
 router.get('/',async (req,res)=>{
     try {
         const business = await Business.find();
@@ -13,15 +13,25 @@ router.get('/',async (req,res)=>{
     }
 });
 
-//Submits a product
+//Get all Orders of a business
+router.get('/ordersmybusiness',async (req,res)=>{
+    try {
+        const business = await Business.find();
+        res.json(business[0].ordersBusiness)
+    } catch (err) {
+        res.json({message:err})
+    }
+});
+
+
+
+//Submits a business
 router.post('/',async (req,res)=>{
     const business = new Business({
-        puesto: req.body.puesto,
-        direccion: req.body.direccion,
+        nameBusiness: req.body.nameBusiness,
         calf: req.body.calf,
-        img: req.body.img,
-        envio: req.body.envio,
-        ruta: req.body.ruta
+        adressBusiness: req.body.adressBusiness,
+        ordersBusiness: req.body.ordersBusiness
     })
     try {
         const savedBusiness = await business.save();
@@ -30,5 +40,23 @@ router.post('/',async (req,res)=>{
         res.json({message:err})
     }
 })
+
+//Adjuntar pedido a negocio
+router.put('/order/:postId',async (req,res)=>{
+    console.log(req.params.postId)
+    try {
+        const updatedPost = await Business.updateOne(
+            { _id : req.params.postId },
+            {$push:{
+                ordersBusiness: req.body.orderBusiness,
+            }}
+            );
+        res.json(updatedPost)
+    } catch (err) {
+        console.log(err)
+        res.json({message:err,"err":"ocurrio un error"})
+    }
+}); 
+
 
 module.exports = router;

@@ -1,40 +1,39 @@
 const mongoose = require("mongoose");
 
-const   DireccionSchema = mongoose.Schema({
-    calle:{
-        type:String,
-        required:true
-    },
-    Mz:{
-        type:Number,
-        required:true
-    },
-    Lote:{
-        type:Number,
-        required:true
-    }
-/*     contraseña:{
-        type:String,
-        required:true,
-        match: /[a-z]/,
-        minlength: 8
-      } */
-})
+
+// const  DireccionSchema = mongoose.Schema([{
+//     street:{
+//         type:String,
+//         required:true
+//     },
+//     manzana:{
+//         type:Number,
+//         required:true
+//     },
+//     lote:{
+//         type:Number,
+//         required:true
+//     }
+// }])
 
 const UsersSchema = mongoose.Schema({
-    usuario: {
+    userName: {
         type: String,
         required: true
     },
-    direccion:{
-        type:DireccionSchema,
-        required:true
+    // userAdress:{
+    //     type:DireccionSchema,
+    //     required:true
+    // },
+    userAdress:{
+        type: Array,
+        required: true
     },
-    telefono: {
+    userPhone: {
         type: Number,
         required: true
     },
-    contraseña: {
+    password: {
         type: String,
         required: true
     },

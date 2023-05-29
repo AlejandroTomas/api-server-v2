@@ -44,21 +44,21 @@ function desHash(string){
 }
 
 //Solo descomentar en desarrollo
-/* router.get('/',async (req,res)=>{
+router.get('/',async (req,res)=>{
     try {
         const users = await Users.find();
         res.json(users)
     } catch (err) {
         res.json({message:err})
     }
-});  */
+});  
 
 /* Buscar un usuario en especifico */
 router.post('/session',async (req,res)=>{
     try {
-        const usuario = await Users.findOne({"usuario":req.body.usuario}); //Donde usuraio sea igual a req.body.usuario
-        if(usuario == null)throw {response:400,status:"Valores incorrectos",statusText:"usuario no existe"};
-        if(desHash(req.body.password) == desHash(usuario.contraseña)){
+        const usuario = await Users.findOne({"userName":req.body.userName}); //Donde usuraio sea igual a req.body.usuario
+        if(usuario == null)throw {response:400,status:"Valores incorrectos",statusText:"Usuario no Existe"};
+        if(desHash(req.body.password) == desHash(usuario.password)){
             res.json(usuario)
         }else{
             throw {response:400,status:"Valores incorrectos",statusText:"Contraseña incorrecta"};
@@ -73,14 +73,10 @@ router.post('/session',async (req,res)=>{
 router.post('/',async (req,res)=>{
     try {
         const user = new Users({
-            usuario: req.body.usuario,
-            direccion:{
-                calle:req.body.direccion.calle,
-                Mz:req.body.direccion.mz,
-                Lote:req.body.direccion.lote
-            },
-            telefono: req.body.telefono,
-            contraseña: hash(req.body.password),
+            userName: req.body.userName,
+            userAdress:req.body.userAdress,
+            userPhone: req.body.userPhone,
+            password: hash(req.body.password),
         });
         const savedUser = await user.save();
         res.json(savedUser)
@@ -94,7 +90,7 @@ router.post('/pedidos',async (req,res)=>{
     try {
         const usuario = await Users.findOne({"_id":req.body._id}); //Donde usuraio sea igual a req.body.usuario
         if(usuario == null)throw {response:400,status:"Valores incorrectos",statusText:"usuario no existe"};
-        if(desHash(req.body.password) == desHash(usuario.contraseña)){
+        if(desHash(req.body.password) == desHash(usuario.password)){
             let { pedidos } = usuario
             res.json(pedidos)
         }else{
@@ -106,20 +102,16 @@ router.post('/pedidos',async (req,res)=>{
 });
 
 
-/* Cmabiar direccion del usuario */
+/* Cambiar direccion del usuario */
 router.put('/adress/',async (req,res)=>{
     try {
         const usuario = await Users.findOne({_id:req.body._id}); //Obtenemos el usuario por su id
         
-        if(desHash(req.body.password)==desHash(usuario.contraseña)){ //Comprobamos la contraseña y el token
+        if(desHash(req.body.password)==desHash(usuario.password)){ //Comprobamos la contraseña y el token
 
             const updatedUsuario = await usuario.updateOne(    //ACTUALIZAMOS
                     {$set: {
-                        direccion:{
-                            calle:req.body.calle,
-                            Mz:req.body.mz,
-                            Lote:req.body.lote
-                        }
+                        userAdress:req.body.userAdress
                     }
             });
             res.json({response:202,updatedUsuario,val:req.body.option})
@@ -135,7 +127,7 @@ router.put('/adress/',async (req,res)=>{
 });
 
 
-/* Cmabiar direccion del usuario */
+/* Cmabiar datos del usuario */
 router.put('/update',async (req,res)=>{
     try {
         const usuario = await Users.findOne({_id:req.body._id}); //Obtenemos el usuario por su id
@@ -144,13 +136,9 @@ router.put('/update',async (req,res)=>{
 
             const updatedUsuario = await usuario.updateOne(    //ACTUALIZAMOS
                     {$set: {
-                        usuario:req.body.usuarioChange,
-                        direccion:{
-                            calle:req.body.calle,
-                            Mz:req.body.mz,
-                            Lote:req.body.lote
-                        },
-                        telefono:req.body.telefono
+                        userName:req.body.usuarioChange,
+                        userAdress:req.body.userAdress,
+                        userPhone:req.body.userPhone
                     }
             });
             res.json({response:202,updatedUsuario,val:req.body.option})
@@ -164,5 +152,24 @@ router.put('/update',async (req,res)=>{
         "err":"ocurrio un error"})
     }
 });
+
+
+//subir pedido al usuario
+//Adjuntar pedido a negocio
+router.put('/order/:postId',async (req,res)=>{
+    //console.log(req.params.postId)
+    try {
+        const updatedPost = await Users.updateOne(
+            { _id : req.params.postId },
+            {$push:{
+                pedidos: req.body.orderUser,
+            }}
+            );
+        res.json(updatedPost)
+    } catch (err) {
+        console.log(err)
+        res.json({message:err,"err":"ocurrio un error"})
+    }
+}); 
 
 module.exports = router;

@@ -1,6 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const Productos = require('../models/Products')
+const Productos = require('../models/Products');
+
+
+
+//Infinite Scroll
+router.get('/pages/:number/:inicio',async (req,res)=>{
+    try {
+        const products = await Productos.find();
+        let nextIndex = 5*req.params.number;
+        let nextPage = parseInt(req.params.number) + 1
+        let a = 5*req.params.number  
+        let b = req.params.inicio  
+        res.json([...products.slice(b,a),{nextPage,nextIndex}])
+    } catch (err) {
+        res.json({message:err})
+    }
+});
 
 //Get all products
 router.get('/',async (req,res)=>{
@@ -28,7 +44,7 @@ router.post('/',async (req,res)=>{
     }
 })
 
-//Specific post
+//Specific product
 router.get('/:postId',async (req,res)=>{
     try {
         const products = await Productos.find(); //busca todos los productos
