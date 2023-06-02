@@ -108,14 +108,13 @@ webSocketServer.on("request",function (request) {
         }
         //error 1006 al teminar la conexion buscar en los dos connection user and business 
 
-        if(e === 1006){
+        if(e === 1006 || e===1001 ){
             let deleteConeccion = connectionsBusiness.indexOf(connection)
             if(deleteConeccion === 0 ){
                 connectionsBusiness.splice(deleteConeccion , 1)
             }else{
                 connectionsUsers.splice(deleteConeccion , 1)
-            }
-            
+            }            
         }
         
     })

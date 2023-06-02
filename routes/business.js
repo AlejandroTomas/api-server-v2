@@ -58,5 +58,23 @@ router.put('/order/:postId',async (req,res)=>{
     }
 }); 
 
+//Eliminar pedido de negocio
+router.delete('/order/delete/:postId',async (req,res)=>{
+    try {
+        const updatedPost = await Business.updateOne(
+            { _id : "646687bb227dcafdfa723314" },
+            { $pull : { "ordersBusiness": { "uui": req.params.postId } } }
+        );
+
+        const business = await Business.find();
+        let ordersUpdate = business[0].ordersBusiness
+        res.json({...updatedPost, ordersUpdate})
+        // console.log("Delete")
+        // res.json({a:"delete"})
+    } catch (err) {
+        console.log(err)
+        res.json({message:err,"err":"ocurrio un error"})
+    }
+}); 
 
 module.exports = router;

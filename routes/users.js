@@ -72,6 +72,10 @@ router.post('/session',async (req,res)=>{
 /* Subir un usuario */
 router.post('/',async (req,res)=>{
     try {
+        const userExists = await Users.findOne({"userName":req.body.userName});
+        
+        if(userExists != null) throw {response:400,status:"Usuario Existe",statusText:"Usuario Existe"};
+        console.log("usuario creado")
         const user = new Users({
             userName: req.body.userName,
             userAdress:req.body.userAdress,

@@ -59,6 +59,17 @@ router.get('/:postId',async (req,res)=>{
     }
 });
 
+//Verificar todo el pedido
+router.put('/verefyorder',async (req,res)=>{
+    try {
+        const products = await Productos.find({"_id":req.body._ids});
+        res.json(products)
+    } catch (err) {
+        res.json({message:err,
+            "err":"ocurrio un error"})
+    }
+});
+
 /* //Delete Post
 router.delete('/:postId',async (req,res)=>{
     try {
@@ -69,6 +80,7 @@ router.delete('/:postId',async (req,res)=>{
     }
 });
 */
+
 //*****************  TEST ******************
 //Update a post
 router.put('/:postId',async (req,res)=>{
@@ -91,5 +103,7 @@ router.put('/:postId',async (req,res)=>{
         "err":"ocurrio un error"})
     }
 }); 
+
+
 
 module.exports = router;
