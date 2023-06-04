@@ -16,6 +16,20 @@ const ProductosSchema = mongoose.Schema({
     img: {
         type: String,
         required: true
+    },
+    quantityOnStock:{
+        type: Number,
+        required: true
+    },
+    onStock:{
+        type:Boolean,
+        required:false,
+        default:true
+    },
+    tag:{
+        type: String,
+        required:false,
+        default:"normal"
     }
 })
 
