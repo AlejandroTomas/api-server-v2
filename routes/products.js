@@ -107,12 +107,12 @@ router.put('/verefyorder',async (req,res)=>{
         a.payload.push(...filters)
         if(a.status==="ok"){
             req.body.products.forEach(async(element,index) => {
-                let count = products[index].quantityOnStock - element.quantity ;
-                ///console.log(count)
-                await Productos.updateOne(
+                let count = await products[index].quantityOnStock - element.quantity ;
+                let b = await Productos.updateOne(
                 { _id : element._id},
                     {$set:{quantityOnStock: count}
                 });
+                
             });
             //updateOne
             // await Productos.updateMany({_id:req.body._ids}, 
@@ -121,13 +121,15 @@ router.put('/verefyorder',async (req,res)=>{
             //         //$set: { quantityOnStock : quantityOnStock - quantity }
             //     })
         }
-        if(a.status==="ok"){
-            a.newListProducts = await Productos.find();
-        }
+
+        // if(a.status==="ok"){
+        //     a.newListProducts = await Productos.find();
+        // }
+
         if(a.status!="ok"){
             a.newListProducts = await Productos.find();
         }
-
+        // a.newListProducts = await Productos.find();
         res.json(a);
     } catch (err) {
         console.log(err)
