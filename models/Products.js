@@ -30,6 +30,10 @@ const ProductosSchema = mongoose.Schema({
         type: String,
         required:false,
         default:"normal"
+    },
+    unit:{
+        type: String,
+        required:true,
     }
 })
 
