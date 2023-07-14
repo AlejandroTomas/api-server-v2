@@ -43,6 +43,18 @@ function desHash(string){
         return newArray
 }
 
+/* Buscar un usuario en especifico */
+router.post('/check',async (req,res)=>{
+    
+    try {
+        const usuario = await Users.findOne({"userName":req.body.userName});
+        if(usuario == null)throw {response:400,status:"Valores incorrectos",statusText:"Usuario no Existe"};
+        res.json({response:200,status:"Usuario encontrado"})
+    } catch (err) {
+        res.json({message:err})
+    }
+});
+
 //Solo descomentar en desarrollo
 router.get('/',async (req,res)=>{
     try {
@@ -107,7 +119,7 @@ router.post('/pedidos',async (req,res)=>{
 
 
 /* Cambiar direccion del usuario */
-router.put('/adress/',async (req,res)=>{
+router.put('/adress',async (req,res)=>{
     try {
         const usuario = await Users.findOne({_id:req.body._id}); //Obtenemos el usuario por su id
         
@@ -136,11 +148,11 @@ router.put('/update',async (req,res)=>{
     try {
         const usuario = await Users.findOne({_id:req.body._id}); //Obtenemos el usuario por su id
         
-        if(desHash(req.body.password)==desHash(usuario.contraseña)){ //Comprobamos la contraseña y el token
+        if(desHash(req.body.password)==desHash(usuario.password)){ //Comprobamos la contraseña y el token
 
             const updatedUsuario = await usuario.updateOne(    //ACTUALIZAMOS
                     {$set: {
-                        userName:req.body.usuarioChange,
+                        userName:req.body.userName,
                         userAdress:req.body.userAdress,
                         userPhone:req.body.userPhone
                     }

@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Business = require('../models/Business')
 
+const Users = require('../models/Users');
+
 //Get business
 router.get('/',async (req,res)=>{
     try {
@@ -43,15 +45,15 @@ router.post('/',async (req,res)=>{
 
 //Adjuntar pedido a negocio
 router.put('/order/:postId',async (req,res)=>{
-    console.log(req.params.postId)
-    try {
-        const updatedPost = await Business.updateOne(
-            { _id : req.params.postId },
-            {$push:{
-                ordersBusiness: req.body.orderBusiness,
-            }}
-            );
-        res.json(updatedPost)
+    
+    try {        
+            const updatedPost = await Business.updateOne(
+                { _id : req.params.postId },
+                {$push:{
+                    ordersBusiness: req.body.orderBusiness,
+                }}
+                );
+            res.json(updatedPost)
     } catch (err) {
         console.log(err)
         res.json({message:err,"err":"ocurrio un error"})
@@ -78,3 +80,26 @@ router.delete('/order/delete/:postId',async (req,res)=>{
 }); 
 
 module.exports = router;
+
+
+//Adjuntar pedido a negocio con validacion de usuaio, requiere que todos esten registrados
+router.put('/order/:postId',async (req,res)=>{
+    console.log(usuario)
+    try {
+        const usuario = await Users.findOne({"userName":"Alefrined"});
+        if(usuario){
+            const updatedPost = await Business.updateOne(
+                { _id : req.params.postId },
+                {$push:{
+                    ordersBusiness: req.body.orderBusiness,
+                }}
+                );
+            res.json(updatedPost)
+        }else{
+            throw {response:404,status:"Usuario no existe",statusText:"Usuario eliminado o Betado"};
+        }
+    } catch (err) {
+        console.log(err)
+        res.json({message:err,"err":"ocurrio un error"})
+    }
+}); 

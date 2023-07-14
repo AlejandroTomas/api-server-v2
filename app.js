@@ -37,7 +37,10 @@ app.get('/',async (req,res)=>{
 
 // conectando la db
 mongoose.set("strictQuery", false);
-
+//yagulMarket
+//db-yagul
+//mongodb://localhost:27017
+//
 mongoose.connect("mongodb+srv://store:matoi8090@cluster0.ieu6f.mongodb.net/db-yagul?retryWrites=true&w=majority")
 .then( async (db) => {
     console.log('db connect')

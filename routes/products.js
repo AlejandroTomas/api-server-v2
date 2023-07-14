@@ -33,7 +33,7 @@ router.get('/pages/:number/:inicio',async (req,res)=>{
         let nextPage = parseInt(req.params.number) + 1
         let a = 5*req.params.number
         let b = req.params.inicio
-        res.json([...products.slice(b,a),{nextPage,nextIndex}])
+        res.json([...products.slice(b,a),{nextPage,nextIndex,totalPage:4}])
     } catch (err) {
         res.json({message:err})
     }
@@ -69,18 +69,19 @@ router.post('/',async (req,res)=>{
 
 //Specific product
 router.put('/search',async (req,res)=>{
-    console.log(req.body.key)
+    
     try {
         const s = req.body.key;
         const regex = new RegExp(s, 'i') // i for case insensitive
-        const products = await Productos.find({ $or:[ {name : {$regex: regex}}, {type : {$regex: regex}}]});
-
+        const products = await Productos.find({ $or:[ {name : {$regex: regex}}, {tag : {$regex: regex}}, {type : {$regex: regex}}]});
+    
+        res.json(products)
+        
         // let found = [];
         // let searchVariable= req.params.postId.toLocaleLowerCase()
         // products.forEach(el=>{
         //     (el.name.toLocaleLowerCase().includes(searchVariable) || el.type.toLocaleLowerCase().includes(searchVariable))?found.push(el):""
         // })
-        res.json(products)
     } catch (err) {
         console.log(err)
         res.json({message:err})
@@ -103,8 +104,8 @@ router.put('/verefyorder',async (req,res)=>{
         }
         const products = await Productos.find({"_id":req.body._ids});
         //const filters = await products.filter( product => !product.onStock);
-        console.log("products",products)
-        console.log("req.body",req.body.products)
+        // console.log("products",products)
+        // console.log("req.body",req.body.products)
         //Problemas al buscar por index y no por id resolver mañana
         // const filterstets = await products.filter( (product,index) => {
         //     //encontrar los 2 iguales
